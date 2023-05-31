@@ -1,0 +1,45 @@
+tr td{
+    text-align: center;
+    border: 1px solid #000000;
+}
+
+td {
+    text-align: left;
+}
+
+table {
+    width:1080px;
+}
+
+.container , .jumbotron{
+    width: 1080px;
+}
+
+
+.h_btn a{
+    color: #000000;
+    font-weight: bold;
+    padding: 10px;
+    background-color: #0b9ce9;border-radius: 20px;
+}
+
+.h_btn a:hover{
+    color: #ea720f;
+    font-weight: bold;
+    padding: 10px;
+    background-color: #0be951;border-radius: 20px;
+}
+
+.d_btn a{
+    color: #000000;
+    font-weight: bold;
+    padding: 10px;
+    background-color: #e90bda;border-radius: 20px;
+}
+
+.d_btn a:hover{
+    color: #ea720f;
+    font-weight: bold;
+    padding: 10px;
+    background-color: #07ddd2;border-radius: 20px;
+}

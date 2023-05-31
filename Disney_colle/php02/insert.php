@@ -1,4 +1,9 @@
 <?php
+// データベース登録
+
+// エラーを出力する デプロイした時にどこにエラ〜が起きたか確認できる 注意としてはコードの一番上に記載する必要がある。
+ini_set( 'display_errors', 1 );
+
 //１．入力チェック(受信確認処理追加)
 //年数名受信チェック
 if(!isset($_POST["year"]) || $_POST["year"]==""){
@@ -45,16 +50,11 @@ if(move_uploaded_file($_FILES['img']['tmp_name'], $upload.$img)){
 }
 
 //4. DB接続します
-try {
-  //Password:MAMP='root',XAMPP='' db=さくらのレンタルサーバーdb名、 host:データベースサーバー名ne.jpのもの root=ユーザ名id パスワード:接続先パスワード
-  $pdo = new PDO('mysql:dbname=chanshi-chanssie_dc_db;charset=utf8;host=localhost','root','');
-} catch (PDOException $e) {
-  exit('DBConnectError:'.$e->getMessage());
-}
-
+include ("funcs.php");
+$pdo= db_conn();
 
 //5．データ登録SQL作成 :nameとかバインド変数 bindValue:橋渡ししてくれる関数 改ざんされるのを防止する
-$sql = "INSERT INTO Disney_colle(year,place,category,img,naiyou,indate)VALUES(:year, :place, :category, :img, :naiyou, sysdate());";
+$sql = "INSERT INTO disney_colle(year,place,category,img,naiyou,indate)VALUES(:year, :place, :category, :img, :naiyou, sysdate());";
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':year',    $year,    PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
 $stmt->bindValue(':place',   $place,   PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
@@ -66,11 +66,9 @@ $status = $stmt->execute(); //execute():実行　True falseが返ってくる
 //6．データ登録処理後
 if($status==false){
   //SQL実行時にエラーがある場合（エラーオブジェクト取得して表示）
-  $error = $stmt->errorInfo();
-  exit("SQLError:".$error[2]);
+  sql_error($stmt);
 }else{
   //５．index.phpへリダイレクト
-  header("Location: index.php"); //Location:コロンの後はスペースが必須、スペースの後にphp名
-  exit();
+  redirect("index.php"); //Location:コロンの後はスペースが必須、スペースの後にphp名
 }
 ?>

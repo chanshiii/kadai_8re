@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Disney_not-for-sale data registration</title>
-  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <script src="./js/jquery-2.1.3.min.js"></script>
+  <link href="./css/bootstrap.min.css" rel="stylesheet">
   <style>div{padding: 10px;font-size:16px;}</style>
 </head>
 <body>
@@ -20,7 +21,7 @@
 
 <!-- Main[Start] -->
 <form method="post" action="insert.php" enctype="multipart/form-data">
-  <div class="jumbotron">
+  <div class="jumbotron" style=padding:20px>
    <fieldset>
     <legend>非売品情報</legend>
      <label for="year">年代：</label>
@@ -56,15 +57,34 @@
         // echo '<option value=>'.$cate[$num] . '</option>';
       }
       ?>
-     </select>
-     <label>画像：<input type="file" name="img" accept=".png, .jpg, .jpeg, .pdf, .doc"></label><br>
+     </select><br>
+     <!-- <label>画像：<input class=img_update type="file" name="img" accept=".png, .jpg, .jpeg, .pdf, .doc"></label><br> -->
+     <label>画像：<input type="file" name="img" accept=".png, .jpg, .jpeg, .pdf, .doc"><p class="img_style"><img src="./img/<?=$v["img"]?>" alt="" width=200px></label><br>
+
      <label>メモ：<textArea name="naiyou" rows="4" cols="40"></textArea></label><br>
      <input type="submit" value="送信">
     </fieldset>
   </div>
 </form>
 <!-- Main[End] -->
+<script>
 
+$('input[type=file]').change(function(){
+  var file = $(this).prop('files')[0];
+  if(!file.type.match('image. *')){
+    $(this).val('');
+    $('.img_style > img').html('');
+    return;
+  }
+
+var reader = new FileReader();
+reader.onload = function(){
+  $('.img_style > img').attr('src', reader.result);
+}
+reader.readAsDataURL(file);
+});
+
+</script>
 
 </body>
 </html>

@@ -1,11 +1,9 @@
 <?php
+// データベース接続、表示
+
 //1.  DB接続します
-try {
-  //Password:MAMP='root',XAMPP=''
-  $pdo = new PDO('mysql:dbname=chanshi-chanssie_dc_db;charset=utf8;host=localhost','root','');
-} catch (PDOException $e) {
-  exit('DBConnectError:'.$e->getMessage());
-}
+include ("funcs.php");
+$pdo= db_conn();
 
 //２．データ登録SQL作成
 $sql ="SELECT * FROM disney_colle;";
@@ -34,9 +32,10 @@ $json = json_encode($values,JSON_UNESCAPED_UNICODE);
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>フリーアンケート表示</title>
+<title>データ登録表示画面</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/range.css">
+<link rel="stylesheet" href="./css/style.css">
 <style>div{padding: 10px;font-size:16px;}</style>
 </head>
 <body id="main">
@@ -58,15 +57,18 @@ $json = json_encode($values,JSON_UNESCAPED_UNICODE);
     <div class="container jumbotron">
 <table>  
   <!-- $valuesに入れてあるものを1レコードずつ取ってきて、ある分表示する $vは任意で決めたもの -->
+  <!-- valuesがデーターベース全てを指していて、ここで言うvが１つの配列を示し、データ分ループ処理をしている -->
 <?php foreach($values as $v){ ?>
         <tr>
-          <td><?=$v["id"]?></td>
-          <td><?=$v["year"]?></td>
+          <td><?=h($v["id"])?></td>
+          <td><?=$v["year"]?></td> <!-- idには数字しか入ってこないのでhはいらない -->
           <td><?=$v["place"]?></td>
-          <td><?=$v["category"]?></td>
+          <td><?=$v["category"]?></td> 
           <!-- insert.phpで受けっとってアップロードした画像を表示するにはここで、画像を保存したパスを指定する必要がある -->
           <td><p class="img_style"><img src="./img/<?=$v["img"]?>" alt=""></p></td>
           <td><?=$v["naiyou"]?></td>
+          <td class=h_btn><a href="detail.php?id=<?=$v["id"]?>">編集</a></td>
+          <td class=d_btn><a href="delete.php?id=<?=$v["id"]?>">削除</a></td>
         </tr>
 <?php } ?>
 </table>
